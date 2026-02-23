@@ -264,6 +264,7 @@
     background: linear-gradient(135deg, rgba(201, 168, 76, 0.06), transparent 60%);
     opacity: 0;
     transition: opacity 0.4s;
+    pointer-events: none;
   }
 
   .card:hover { border-color: rgba(201, 168, 76, 0.5); transform: translateY(-4px); }
@@ -600,8 +601,10 @@
       <span class="card-icon">✨</span>
       <div class="card-label">Место</div>
       <div class="card-value">
-        <strong>Макатаева 403</strong>
-        Узынагаш
+        <a href="https://2gis.kz/almaty/search/Макатаева%20403" target="_blank" style="color: var(--gold-light); text-decoration: none; border-bottom: 1px solid var(--gold-dim); transition: color 0.3s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--gold-light)'">
+          <strong>Макатаева 403</strong>
+        </a>
+        Алматы
       </div>
     </div>
   </div>
