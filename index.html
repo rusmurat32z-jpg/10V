@@ -257,12 +257,48 @@
   }
   updateCountdown(); setInterval(updateCountdown,1000);
 
-  function handleRsvp() {
+  const TG_TOKEN = '8703571552:AAE8MpXTrWYIJOIqcD_snt8dbMyxM4BO8t0';
+
+  async function getChatId() {
+    try {
+      const res = await fetch('https://api.telegram.org/bot' + TG_TOKEN + '/getUpdates');
+      const data = await res.json();
+      if (data.result && data.result.length > 0) {
+        return data.result[data.result.length - 1].message.chat.id;
+      }
+    } catch(e) {}
+    return null;
+  }
+
+  async function sendToTelegram(name, attend, food) {
+    const chatId = await getChatId();
+    if (!chatId) return;
+    const attendLabels = { yes: 'Да, точно буду! 🎉', maybe: '50/50, скажу позже 🤔', no: 'Не смогу прийти 😔' };
+    const text = '🌙 Новый ответ на ифтар!
+
+' +
+      '👤 Имя: ' + name + '
+' +
+      '✅ Ответ: ' + attendLabels[attend] + '
+' +
+      (food ? '💬 Пожелание: ' + food : '');
+    await fetch('https://api.telegram.org/bot' + TG_TOKEN + '/sendMessage', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: chatId, text: text })
+    });
+  }
+
+  async function handleRsvp() {
     const name = document.getElementById('rsvp-name').value.trim();
     const attend = document.querySelector('input[name="attend"]:checked');
+    const food = document.getElementById('rsvp-food').value.trim();
     const err = document.getElementById('rsvp-error');
+    const btn = document.querySelector('.rsvp-btn span');
     if (!name || !attend) { err.style.display='block'; return; }
     err.style.display='none';
+    btn.textContent = 'Отправляем... 🌙';
+    await sendToTelegram(name, attend.value, food);
     const msgs = {
       yes: 'Мы тебя ждём за нашим столом.<br>Рамадан Карим! ✦',
       maybe: 'Ждём твоего подтверждения!<br>Надеемся увидеть тебя 🌙',
@@ -271,8 +307,7 @@
     document.getElementById('rsvp-success-name').textContent = name;
     document.getElementById('rsvp-success-msg').innerHTML = msgs[attend.value];
     document.getElementById('rsvp-form-wrap').style.display = 'none';
-    const box = document.getElementById('rsvp-success');
-    box.style.display = 'block';
+    document.getElementById('rsvp-success').style.display = 'block';
   }
 
   window.addEventListener('scroll', () => {
