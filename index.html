@@ -7,490 +7,109 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
   :root {
-    --midnight: #0a0d1a;
-    --navy: #0d1530;
-    --gold: #c9a84c;
-    --gold-light: #e8c97a;
-    --gold-dim: #7a6230;
-    --cream: #f5edd8;
-    --cream-dim: #c8b99a;
-    --rose: #9b3a4a;
+    --midnight: #0a0d1a; --navy: #0d1530;
+    --gold: #c9a84c; --gold-light: #e8c97a; --gold-dim: #7a6230;
+    --cream: #f5edd8; --cream-dim: #c8b99a;
   }
-
   html { scroll-behavior: smooth; }
+  body { background: var(--midnight); color: var(--cream); font-family: 'Cormorant Garamond', serif; min-height: 100vh; overflow-x: hidden; }
 
-  body {
-    background: var(--midnight);
-    color: var(--cream);
-    font-family: 'Cormorant Garamond', serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+  .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .star { position: absolute; background: white; border-radius: 50%; animation: twinkle var(--dur,3s) ease-in-out infinite; animation-delay: var(--delay,0s); opacity: 0; }
+  @keyframes twinkle { 0%,100%{opacity:0;transform:scale(0.8)} 50%{opacity:var(--max-op,0.8);transform:scale(1.2)} }
 
-  /* Stars background */
-  .stars {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden;
-  }
+  .geo-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.04;
+    background-image: repeating-linear-gradient(60deg,var(--gold) 0,var(--gold) 1px,transparent 0,transparent 50%), repeating-linear-gradient(-60deg,var(--gold) 0,var(--gold) 1px,transparent 0,transparent 50%), repeating-linear-gradient(0deg,var(--gold) 0,var(--gold) 1px,transparent 0,transparent 50%);
+    background-size: 80px 80px; }
 
-  .star {
-    position: absolute;
-    background: white;
-    border-radius: 50%;
-    animation: twinkle var(--dur, 3s) ease-in-out infinite;
-    animation-delay: var(--delay, 0s);
-    opacity: 0;
-  }
+  .rope { position: fixed; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg,transparent,var(--gold),var(--gold-light),var(--gold),transparent); z-index: 10; box-shadow: 0 0 12px var(--gold); }
 
-  @keyframes twinkle {
-    0%, 100% { opacity: 0; transform: scale(0.8); }
-    50% { opacity: var(--max-op, 0.8); transform: scale(1.2); }
-  }
+  .hero { position: relative; z-index: 1; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 20px; text-align: center; }
 
-  /* Geometric ornament */
-  .geo-bg {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.04;
-    background-image:
-      repeating-linear-gradient(60deg, var(--gold) 0, var(--gold) 1px, transparent 0, transparent 50%),
-      repeating-linear-gradient(-60deg, var(--gold) 0, var(--gold) 1px, transparent 0, transparent 50%),
-      repeating-linear-gradient(0deg, var(--gold) 0, var(--gold) 1px, transparent 0, transparent 50%);
-    background-size: 80px 80px;
-  }
+  .lanterns { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: space-around; pointer-events: none; z-index: 0; opacity: 0.12; font-size: 60px; padding: 0 40px; user-select: none; }
+  .lantern { animation: swing 4s ease-in-out infinite; display: inline-block; transform-origin: top center; }
+  .lantern:nth-child(2){animation-delay:.6s;animation-duration:5s} .lantern:nth-child(3){animation-delay:1.2s;animation-duration:4.5s} .lantern:nth-child(4){animation-delay:.3s}
+  @keyframes swing{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
 
-  /* Hero */
-  .hero {
-    position: relative;
-    z-index: 1;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 60px 20px;
-    text-align: center;
-  }
+  .moon-wrap { position: relative; width: 140px; height: 140px; margin-bottom: 40px; animation: float 6s ease-in-out infinite; }
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+  .moon { width: 140px; height: 140px; border-radius: 50%; background: radial-gradient(circle at 40% 40%,#f7e18a,#c9a84c 50%,#7a5a1a); box-shadow: 0 0 60px rgba(201,168,76,.5),0 0 120px rgba(201,168,76,.2); position: relative; overflow: hidden; }
+  .moon::after { content:''; position: absolute; top: 10px; left: 20px; width: 100px; height: 100px; border-radius: 50%; background: var(--navy); box-shadow: inset 0 0 20px rgba(0,0,0,.5); }
+  .stars-around { position: absolute; inset: -20px; }
+  .stars-around span { position: absolute; color: var(--gold-light); font-size: 16px; animation: twinkle 2s ease-in-out infinite; }
+  .stars-around span:nth-child(1){top:10px;left:50%;animation-delay:0s} .stars-around span:nth-child(2){top:30%;right:5px;animation-delay:.4s} .stars-around span:nth-child(3){bottom:10px;left:40%;animation-delay:.8s} .stars-around span:nth-child(4){top:40%;left:5px;animation-delay:1.2s} .stars-around span:nth-child(5){top:15%;right:25%;animation-delay:.3s}
 
-  /* Moon & crescent */
-  .moon-wrap {
-    position: relative;
-    width: 140px;
-    height: 140px;
-    margin-bottom: 40px;
-    animation: float 6s ease-in-out infinite;
-  }
+  .ornament { display: flex; align-items: center; gap: 14px; margin: 18px 0; opacity: 0; animation: fadeUp 1s forwards; animation-delay: .3s; }
+  .ornament-line { width: 80px; height: 1px; background: linear-gradient(90deg,transparent,var(--gold)); }
+  .ornament-line.right { background: linear-gradient(90deg,var(--gold),transparent); }
+  .ornament-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+  .ornament-diamond { width: 10px; height: 10px; background: var(--gold); transform: rotate(45deg); }
 
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-14px); }
-  }
+  .arabic-top { font-family:'Scheherazade New',serif; font-size:2.2rem; color:var(--gold-light); letter-spacing:4px; opacity:0; animation:fadeUp 1s forwards; animation-delay:.1s; text-shadow:0 0 30px rgba(201,168,76,.4); }
+  .title-small { font-size:.85rem; letter-spacing:6px; text-transform:uppercase; color:var(--gold); opacity:0; animation:fadeUp 1s forwards; animation-delay:.5s; }
+  .title-main { font-size:clamp(3.5rem,10vw,6.5rem); font-weight:300; line-height:1; letter-spacing:2px; color:var(--cream); opacity:0; animation:fadeUp 1s forwards; animation-delay:.7s; }
+  .title-main em { font-style:italic; color:var(--gold-light); }
+  .title-class { font-size:clamp(1.4rem,4vw,2rem); font-weight:300; letter-spacing:10px; text-transform:uppercase; color:var(--cream-dim); opacity:0; animation:fadeUp 1s forwards; animation-delay:.9s; margin-top:8px; }
+  .invite-text { font-size:clamp(1.1rem,2.5vw,1.4rem); font-weight:300; font-style:italic; line-height:1.8; max-width:580px; color:var(--cream-dim); opacity:0; animation:fadeUp 1s forwards; animation-delay:1.1s; margin:10px auto 0; }
 
-  .moon {
-    width: 140px;
-    height: 140px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 40% 40%, #f7e18a, #c9a84c 50%, #7a5a1a);
-    box-shadow: 0 0 60px rgba(201, 168, 76, 0.5), 0 0 120px rgba(201, 168, 76, 0.2);
-    position: relative;
-    overflow: hidden;
-  }
+  .countdown { display:flex; justify-content:center; gap:24px; margin:50px 0 0; flex-wrap:wrap; opacity:0; animation:fadeUp 1s forwards; animation-delay:1.9s; }
+  .count-box { text-align:center; min-width:80px; }
+  .count-num { font-size:3rem; font-weight:300; color:var(--gold-light); line-height:1; display:block; }
+  .count-label { font-size:.65rem; letter-spacing:3px; text-transform:uppercase; color:var(--gold-dim); margin-top:6px; }
+  .count-sep { font-size:2rem; color:var(--gold-dim); align-self:flex-start; padding-top:8px; }
 
-  .moon::after {
-    content: '';
-    position: absolute;
-    top: 10px;
-    left: 20px;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background: var(--navy);
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
-  }
+  .details { position:relative; z-index:1; padding:60px 20px 80px; max-width:900px; margin:0 auto; }
+  .cards-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:24px; margin-top:40px; }
+  .card { background:linear-gradient(145deg,rgba(255,255,255,.04),rgba(255,255,255,.01)); border:1px solid rgba(201,168,76,.2); border-radius:2px; padding:36px 28px; text-align:center; position:relative; overflow:hidden; transition:border-color .4s,transform .4s; opacity:0; animation:fadeUp 1s forwards; }
+  .card:nth-child(1){animation-delay:1.3s} .card:nth-child(2){animation-delay:1.5s} .card:nth-child(3){animation-delay:1.7s}
+  .card::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(201,168,76,.06),transparent 60%); opacity:0; transition:opacity .4s; pointer-events:none; }
+  .card:hover{border-color:rgba(201,168,76,.5);transform:translateY(-4px)} .card:hover::before{opacity:1}
+  .card-icon{font-size:2.2rem;margin-bottom:16px;display:block}
+  .card-label{font-size:.7rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+  .card-value{font-size:1.5rem;font-weight:300;color:var(--cream);line-height:1.4}
+  .card-value strong{display:block;font-weight:600;color:var(--gold-light);font-size:1.7rem}
 
-  .stars-around {
-    position: absolute;
-    inset: -20px;
-  }
+  .quote-section { position:relative; z-index:1; text-align:center; padding:0 20px 80px; max-width:700px; margin:0 auto; opacity:0; animation:fadeUp 1s forwards; animation-delay:2s; }
+  .quote-arabic{font-family:'Scheherazade New',serif;font-size:1.8rem;color:var(--gold);letter-spacing:2px;margin-bottom:14px}
+  .quote-text{font-style:italic;font-size:1.15rem;color:var(--cream-dim);line-height:1.9}
 
-  .stars-around span {
-    position: absolute;
-    color: var(--gold-light);
-    font-size: 16px;
-    animation: twinkle 2s ease-in-out infinite;
-  }
-  .stars-around span:nth-child(1) { top: 10px; left: 50%; animation-delay: 0s; }
-  .stars-around span:nth-child(2) { top: 30%; right: 5px; animation-delay: 0.4s; }
-  .stars-around span:nth-child(3) { bottom: 10px; left: 40%; animation-delay: 0.8s; }
-  .stars-around span:nth-child(4) { top: 40%; left: 5px; animation-delay: 1.2s; }
-  .stars-around span:nth-child(5) { top: 15%; right: 25%; animation-delay: 0.3s; }
+  .section-head{text-align:center;margin-bottom:10px}
+  .section-head h2{font-size:clamp(2rem,5vw,3rem);font-weight:300;color:var(--cream);letter-spacing:3px}
 
-  /* Divider ornament */
-  .ornament {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin: 18px 0;
-    opacity: 0;
-    animation: fadeUp 1s forwards;
-    animation-delay: 0.3s;
-  }
+  /* ===== RSVP FORM ===== */
+  .rsvp-section { position:relative; z-index:1; text-align:center; padding:0 20px 100px; opacity:0; animation:fadeUp 1s forwards; animation-delay:2.2s; }
+  .rsvp-form-wrap { max-width:600px; margin:0 auto; text-align:left; }
+  .rsvp-field { margin-bottom:30px; }
+  .rsvp-label { display:block; font-size:.75rem; letter-spacing:4px; text-transform:uppercase; color:var(--gold); margin-bottom:12px; }
+  .rsvp-input { width:100%; background:rgba(255,255,255,.04); border:1px solid rgba(201,168,76,.25); border-radius:2px; padding:16px 20px; color:var(--cream); font-family:'Cormorant Garamond',serif; font-size:1.1rem; outline:none; transition:border-color .3s,box-shadow .3s; }
+  .rsvp-input::placeholder{color:rgba(200,185,154,.35)}
+  .rsvp-input:focus{border-color:var(--gold);box-shadow:0 0 20px rgba(201,168,76,.1)}
+  .rsvp-textarea{resize:vertical;min-height:100px}
 
-  .ornament-line {
-    width: 80px;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--gold));
-  }
-  .ornament-line.right {
-    background: linear-gradient(90deg, var(--gold), transparent);
-  }
-  .ornament-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--gold);
-  }
-  .ornament-diamond {
-    width: 10px; height: 10px;
-    background: var(--gold);
-    transform: rotate(45deg);
-  }
+  .radio-group{display:flex;flex-direction:column;gap:12px}
+  .radio-option { display:flex; align-items:center; gap:16px; cursor:pointer; padding:14px 20px; border:1px solid rgba(201,168,76,.15); border-radius:2px; transition:border-color .3s,background .3s; position:relative; }
+  .radio-option:hover{border-color:rgba(201,168,76,.4);background:rgba(201,168,76,.04)}
+  .radio-option input[type="radio"]{position:absolute;opacity:0;width:0;height:0}
+  .radio-custom { width:20px; height:20px; border-radius:50%; border:2px solid var(--gold-dim); flex-shrink:0; position:relative; transition:border-color .3s; }
+  .radio-custom::after { content:''; position:absolute; inset:3px; border-radius:50%; background:var(--gold); transform:scale(0); transition:transform .25s ease; }
+  .radio-option input[type="radio"]:checked ~ .radio-custom{border-color:var(--gold)}
+  .radio-option input[type="radio"]:checked ~ .radio-custom::after{transform:scale(1)}
+  .radio-option:has(input:checked){border-color:rgba(201,168,76,.5);background:rgba(201,168,76,.06)}
+  .radio-text{font-size:1.15rem;color:var(--cream-dim);transition:color .3s}
+  .radio-option:has(input:checked) .radio-text{color:var(--cream)}
 
-  .arabic-top {
-    font-family: 'Scheherazade New', serif;
-    font-size: 2.2rem;
-    color: var(--gold-light);
-    letter-spacing: 4px;
-    opacity: 0;
-    animation: fadeUp 1s forwards;
-    animation-delay: 0.1s;
-    text-shadow: 0 0 30px rgba(201, 168, 76, 0.4);
-  }
+  .rsvp-btn { width:100%; margin-top:8px; padding:20px 60px; border:1px solid var(--gold); color:var(--gold-light); font-family:'Cormorant Garamond',serif; font-size:1.15rem; letter-spacing:5px; text-transform:uppercase; position:relative; overflow:hidden; transition:color .4s; cursor:pointer; background:transparent; border-radius:2px; }
+  .rsvp-btn::before { content:''; position:absolute; inset:0; background:linear-gradient(90deg,var(--gold-dim),var(--gold)); transform:scaleX(0); transform-origin:left; transition:transform .4s ease; z-index:0; }
+  .rsvp-btn span{position:relative;z-index:1}
+  .rsvp-btn:hover{color:var(--midnight)} .rsvp-btn:hover::before{transform:scaleX(1)}
 
-  .title-small {
-    font-size: 0.85rem;
-    letter-spacing: 6px;
-    text-transform: uppercase;
-    color: var(--gold);
-    opacity: 0;
-    animation: fadeUp 1s forwards;
-    animation-delay: 0.5s;
-  }
+  .rsvp-success-box{display:none;padding:60px 20px;animation:fadeUp .8s forwards}
 
-  .title-main {
-    font-size: clamp(3.5rem, 10vw, 6.5rem);
-    font-weight: 300;
-    line-height: 1;
-    letter-spacing: 2px;
-    color: var(--cream);
-    opacity: 0;
-    animation: fadeUp 1s forwards;
-    animation-delay: 0.7s;
-  }
+  .footer { position:relative; z-index:1; text-align:center; padding:30px; border-top:1px solid rgba(201,168,76,.1); font-size:.85rem; color:var(--gold-dim); letter-spacing:2px; }
 
-  .title-main em {
-    font-style: italic;
-    color: var(--gold-light);
-  }
-
-  .title-class {
-    font-size: clamp(1.4rem, 4vw, 2rem);
-    font-weight: 300;
-    letter-spacing: 10px;
-    text-transform: uppercase;
-    color: var(--cream-dim);
-    opacity: 0;
-    animation: fadeUp 1s forwards;
-    animation-delay: 0.9s;
-    margin-top: 8px;
-  }
-
-  .invite-text {
-    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-    font-weight: 300;
-    font-style: italic;
-    line-height: 1.8;
-    max-width: 580px;
-    color: var(--cream-dim);
-    opacity: 0;
-    animation: fadeUp 1s forwards;
-    animation-delay: 1.1s;
-    margin: 10px auto 0;
-  }
-
-  /* Cards section */
-  .details {
-    position: relative;
-    z-index: 1;
-    padding: 60px 20px 80px;
-    max-width: 900px;
-    margin: 0 auto;
-  }
-
-  .cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 24px;
-    margin-top: 40px;
-  }
-
-  .card {
-    background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
-    border: 1px solid rgba(201, 168, 76, 0.2);
-    border-radius: 2px;
-    padding: 36px 28px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.4s, transform 0.4s;
-    opacity: 0;
-    animation: fadeUp 1s forwards;
-  }
-
-  .card:nth-child(1) { animation-delay: 1.3s; }
-  .card:nth-child(2) { animation-delay: 1.5s; }
-  .card:nth-child(3) { animation-delay: 1.7s; }
-
-  .card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(201, 168, 76, 0.06), transparent 60%);
-    opacity: 0;
-    transition: opacity 0.4s;
-    pointer-events: none;
-  }
-
-  .card:hover { border-color: rgba(201, 168, 76, 0.5); transform: translateY(-4px); }
-  .card:hover::before { opacity: 1; }
-
-  .card-icon {
-    font-size: 2.2rem;
-    margin-bottom: 16px;
-    display: block;
-  }
-
-  .card-label {
-    font-size: 0.7rem;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 10px;
-  }
-
-  .card-value {
-    font-size: 1.5rem;
-    font-weight: 300;
-    color: var(--cream);
-    line-height: 1.4;
-  }
-
-  .card-value strong {
-    display: block;
-    font-weight: 600;
-    color: var(--gold-light);
-    font-size: 1.7rem;
-  }
-
-  /* Quote */
-  .quote-section {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    padding: 0 20px 80px;
-    max-width: 700px;
-    margin: 0 auto;
-    opacity: 0;
-    animation: fadeUp 1s forwards;
-    animation-delay: 2s;
-  }
-
-  .quote-arabic {
-    font-family: 'Scheherazade New', serif;
-    font-size: 1.8rem;
-    color: var(--gold);
-    letter-spacing: 2px;
-    margin-bottom: 14px;
-  }
-
-  .quote-text {
-    font-style: italic;
-    font-size: 1.15rem;
-    color: var(--cream-dim);
-    line-height: 1.9;
-  }
-
-  /* RSVP button area */
-  .rsvp-section {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    padding: 0 20px 100px;
-    opacity: 0;
-    animation: fadeUp 1s forwards;
-    animation-delay: 2.2s;
-  }
-
-  .rsvp-title {
-    font-size: 1rem;
-    letter-spacing: 5px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 28px;
-  }
-
-  .rsvp-btn {
-    display: inline-block;
-    padding: 18px 60px;
-    border: 1px solid var(--gold);
-    color: var(--gold-light);
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.1rem;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    text-decoration: none;
-    position: relative;
-    overflow: hidden;
-    transition: color 0.4s;
-    cursor: pointer;
-    background: transparent;
-  }
-
-  .rsvp-btn::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--gold);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.4s ease;
-    z-index: -1;
-  }
-
-  .rsvp-btn:hover { color: var(--midnight); }
-  .rsvp-btn:hover::before { transform: scaleX(1); }
-
-  /* Footer */
-  .footer {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    padding: 30px;
-    border-top: 1px solid rgba(201, 168, 76, 0.1);
-    font-size: 0.85rem;
-    color: var(--gold-dim);
-    letter-spacing: 2px;
-  }
-
-  /* Lantern decoration */
-  .lanterns {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: space-around;
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.12;
-    font-size: 60px;
-    padding: 0 40px;
-    user-select: none;
-  }
-
-  .lantern {
-    animation: swing 4s ease-in-out infinite;
-    display: inline-block;
-    transform-origin: top center;
-  }
-
-  .lantern:nth-child(2) { animation-delay: 0.6s; animation-duration: 5s; }
-  .lantern:nth-child(3) { animation-delay: 1.2s; animation-duration: 4.5s; }
-  .lantern:nth-child(4) { animation-delay: 0.3s; }
-
-  @keyframes swing {
-    0%, 100% { transform: rotate(-6deg); }
-    50% { transform: rotate(6deg); }
-  }
-
-  /* Section heading */
-  .section-head {
-    text-align: center;
-    margin-bottom: 10px;
-  }
-
-  .section-head h2 {
-    font-size: clamp(2rem, 5vw, 3rem);
-    font-weight: 300;
-    color: var(--cream);
-    letter-spacing: 3px;
-  }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* Countdown */
-  .countdown {
-    display: flex;
-    justify-content: center;
-    gap: 24px;
-    margin: 50px 0 0;
-    flex-wrap: wrap;
-    opacity: 0;
-    animation: fadeUp 1s forwards;
-    animation-delay: 1.9s;
-  }
-
-  .count-box {
-    text-align: center;
-    min-width: 80px;
-  }
-
-  .count-num {
-    font-size: 3rem;
-    font-weight: 300;
-    color: var(--gold-light);
-    line-height: 1;
-    display: block;
-  }
-
-  .count-label {
-    font-size: 0.65rem;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--gold-dim);
-    margin-top: 6px;
-  }
-
-  .count-sep {
-    font-size: 2rem;
-    color: var(--gold-dim);
-    align-self: flex-start;
-    padding-top: 8px;
-  }
-
-  /* Light rope */
-  .rope {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light), var(--gold), transparent);
-    z-index: 10;
-    box-shadow: 0 0 12px var(--gold);
-  }
-
-  /* Parallax wrapper */
-  .parallax-wrap { position: relative; }
+  @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+  .parallax-wrap{position:relative}
 </style>
 </head>
 <body>
@@ -499,195 +118,165 @@
 <div class="geo-bg"></div>
 <div class="stars" id="stars"></div>
 
-<!-- Hero -->
 <section class="hero parallax-wrap">
   <div class="lanterns">
-    <span class="lantern">🏮</span>
-    <span class="lantern">🏮</span>
-    <span class="lantern">🏮</span>
-    <span class="lantern">🏮</span>
+    <span class="lantern">🏮</span><span class="lantern">🏮</span>
+    <span class="lantern">🏮</span><span class="lantern">🏮</span>
   </div>
-
   <div class="moon-wrap">
-    <div class="stars-around">
-      <span>✦</span><span>✦</span><span>✦</span><span>✦</span><span>✦</span>
-    </div>
+    <div class="stars-around"><span>✦</span><span>✦</span><span>✦</span><span>✦</span><span>✦</span></div>
     <div class="moon"></div>
   </div>
-
   <div class="arabic-top">بسم الله الرحمن الرحيم</div>
-
-  <div class="ornament">
-    <div class="ornament-line"></div>
-    <div class="ornament-dot"></div>
-    <div class="ornament-diamond"></div>
-    <div class="ornament-dot"></div>
-    <div class="ornament-line right"></div>
-  </div>
-
+  <div class="ornament"><div class="ornament-line"></div><div class="ornament-dot"></div><div class="ornament-diamond"></div><div class="ornament-dot"></div><div class="ornament-line right"></div></div>
   <p class="title-small">С любовью приглашаем вас на</p>
-
   <h1 class="title-main"><em>Ифтар</em></h1>
-
   <p class="title-class">10 класс</p>
-
-  <div class="ornament" style="animation-delay:1s">
-    <div class="ornament-line"></div>
-    <div class="ornament-dot"></div>
-    <div class="ornament-diamond"></div>
-    <div class="ornament-dot"></div>
-    <div class="ornament-line right"></div>
-  </div>
-
-  <p class="invite-text">
-    Дорогие одноклассники! В этот благословенный месяц Рамадан
-    мы собираемся вместе, чтобы разделить трапезу, тепло и радость.
-    Ждём вас!
-  </p>
-
-  <!-- Countdown -->
+  <div class="ornament" style="animation-delay:1s"><div class="ornament-line"></div><div class="ornament-dot"></div><div class="ornament-diamond"></div><div class="ornament-dot"></div><div class="ornament-line right"></div></div>
+  <p class="invite-text">Дорогие одноклассники! В этот благословенный месяц Рамадан мы собираемся вместе, чтобы разделить трапезу, тепло и радость. Ждём вас!</p>
   <div class="countdown" id="countdown">
-    <div class="count-box">
-      <span class="count-num" id="cd-days">--</span>
-      <span class="count-label">Дней</span>
-    </div>
+    <div class="count-box"><span class="count-num" id="cd-days">--</span><span class="count-label">Дней</span></div>
     <span class="count-sep">:</span>
-    <div class="count-box">
-      <span class="count-num" id="cd-hours">--</span>
-      <span class="count-label">Часов</span>
-    </div>
+    <div class="count-box"><span class="count-num" id="cd-hours">--</span><span class="count-label">Часов</span></div>
     <span class="count-sep">:</span>
-    <div class="count-box">
-      <span class="count-num" id="cd-mins">--</span>
-      <span class="count-label">Минут</span>
-    </div>
+    <div class="count-box"><span class="count-num" id="cd-mins">--</span><span class="count-label">Минут</span></div>
     <span class="count-sep">:</span>
-    <div class="count-box">
-      <span class="count-num" id="cd-secs">--</span>
-      <span class="count-label">Секунд</span>
-    </div>
+    <div class="count-box"><span class="count-num" id="cd-secs">--</span><span class="count-label">Секунд</span></div>
   </div>
 </section>
 
-<!-- Details -->
 <section class="details">
   <div class="section-head">
-    <div class="ornament" style="opacity:1; justify-content:center;">
-      <div class="ornament-line"></div>
-      <div class="ornament-diamond"></div>
-      <div class="ornament-line right"></div>
-    </div>
+    <div class="ornament" style="opacity:1;justify-content:center"><div class="ornament-line"></div><div class="ornament-diamond"></div><div class="ornament-line right"></div></div>
     <h2>Детали вечера</h2>
   </div>
-
   <div class="cards-grid">
     <div class="card">
       <span class="card-icon">🌙</span>
       <div class="card-label">Дата</div>
-      <div class="card-value">
-        <strong id="event-date">7 марта</strong>
-        2026 года
-      </div>
+      <div class="card-value"><strong>7 марта</strong>2026 года</div>
     </div>
     <div class="card">
       <span class="card-icon">⏳</span>
       <div class="card-label">Время</div>
-      <div class="card-value">
-        <strong>17:00</strong>
-        Открытие ифтара
-      </div>
+      <div class="card-value"><strong>17:00</strong>Открытие ифтара</div>
     </div>
     <div class="card">
       <span class="card-icon">✨</span>
       <div class="card-label">Место</div>
       <div class="card-value">
-        <a href="https://2gis.kz/almaty/search/Макатаева%20403" target="_blank" style="color: var(--gold-light); text-decoration: none; border-bottom: 1px solid var(--gold-dim); transition: color 0.3s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--gold-light)'">
-          <strong>Макатаева 403</strong>
+        <a href="https://2gis.kz/almaty/search/Макатаева%20403" target="_blank" style="color:var(--gold-light);text-decoration:none;display:inline-flex;flex-direction:column;align-items:center;gap:6px;transition:color .3s" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--gold-light)'">
+          <strong style="display:block;font-weight:600;color:inherit;font-size:1.7rem;border-bottom:1px dashed rgba(201,168,76,0.5)">Макатаева 403</strong>
+          <span style="font-size:0.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold-dim)">Открыть в 2ГИС &#8594;</span>
         </a>
-        Алматы
+        Узынагаш
       </div>
     </div>
   </div>
 </section>
 
-<!-- Quote -->
 <div class="quote-section">
-  <div class="ornament" style="opacity:1; justify-content:center; margin-bottom:28px;">
-    <div class="ornament-line"></div>
-    <div class="ornament-diamond"></div>
-    <div class="ornament-line right"></div>
-  </div>
+  <div class="ornament" style="opacity:1;justify-content:center;margin-bottom:28px"><div class="ornament-line"></div><div class="ornament-diamond"></div><div class="ornament-line right"></div></div>
   <div class="quote-arabic">رمضان كريم</div>
   <p class="quote-text">
-    «Поистине, в Рамадане отворяются врата рая,<br>
-    закрываются врата ада и заковываются шайтаны.»<br>
-    <span style="font-size:0.9rem; color: var(--gold-dim); margin-top:8px; display:block;">— Хадис (аль-Бухари, Муслим)</span>
+    «Поистине, в Рамадане отворяются врата рая,<br>закрываются врата ада и заковываются шайтаны.»<br>
+    <span style="font-size:.9rem;color:var(--gold-dim);margin-top:8px;display:block">— Хадис (аль-Бухари, Муслим)</span>
   </p>
 </div>
 
 <!-- RSVP -->
 <div class="rsvp-section">
-  <p class="rsvp-title">Подтвердите участие</p>
-  <button class="rsvp-btn" onclick="handleRsvp()">Приду на ифтар ✦</button>
-  <p style="margin-top: 22px; color: var(--gold-dim); font-style: italic; font-size: 0.9rem;" id="rsvp-msg"></p>
+  <div class="ornament" style="opacity:1;justify-content:center;margin-bottom:20px"><div class="ornament-line"></div><div class="ornament-diamond"></div><div class="ornament-line right"></div></div>
+  <h2 style="font-size:clamp(2rem,5vw,3rem);font-weight:300;color:var(--cream);letter-spacing:3px;margin-bottom:10px">Отметись 👇</h2>
+  <p style="color:var(--cream-dim);font-style:italic;font-size:1.05rem;margin-bottom:44px">Ответь до среды, чтобы мы успели забронировать нужный стол</p>
+
+  <div class="rsvp-form-wrap" id="rsvp-form-wrap">
+
+    <div class="rsvp-field">
+      <label class="rsvp-label">Имя и Фамилия</label>
+      <input type="text" id="rsvp-name" class="rsvp-input" placeholder="Как в журнале :)" />
+    </div>
+
+    <div class="rsvp-field">
+      <label class="rsvp-label">Ты с нами?</label>
+      <div class="radio-group">
+        <label class="radio-option">
+          <input type="radio" name="attend" value="yes" />
+          <span class="radio-custom"></span>
+          <span class="radio-text">Да, точно буду! 🎉</span>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="attend" value="maybe" />
+          <span class="radio-custom"></span>
+          <span class="radio-text">50/50, скажу позже 🤔</span>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="attend" value="no" />
+          <span class="radio-custom"></span>
+          <span class="radio-text">Не смогу прийти 😔</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="rsvp-field">
+      <label class="rsvp-label">Пожелания и слова</label>
+      <textarea id="rsvp-food" class="rsvp-input rsvp-textarea" placeholder="Напиши что-нибудь тёплое :)"></textarea>
+    </div>
+
+    <button class="rsvp-btn" onclick="handleRsvp()"><span>Отправить ✦</span></button>
+    <p id="rsvp-error" style="color:#e07070;font-style:italic;margin-top:16px;text-align:center;display:none">Пожалуйста, заполни имя и выбери ответ 🌙</p>
+  </div>
+
+  <div class="rsvp-success-box" id="rsvp-success">
+    <div style="font-size:3.5rem;margin-bottom:20px">🌙</div>
+    <p style="font-size:2rem;color:var(--gold-light);font-weight:300;margin-bottom:14px" id="rsvp-success-name"></p>
+    <p style="color:var(--cream-dim);font-style:italic;font-size:1.15rem;line-height:1.9" id="rsvp-success-msg"></p>
+  </div>
 </div>
 
-<!-- Footer -->
-<div class="footer">
-  ✦ &nbsp; Рамадан Карим &nbsp; · &nbsp; 10 класс &nbsp; · &nbsp; 2026 &nbsp; ✦
-</div>
+<div class="footer">✦ &nbsp; Рамадан Карим &nbsp; · &nbsp; 10 класс &nbsp; · &nbsp; 2026 &nbsp; ✦</div>
 
 <script>
-  // Stars
   const starsEl = document.getElementById('stars');
   for (let i = 0; i < 150; i++) {
-    const s = document.createElement('div');
-    s.className = 'star';
-    const size = Math.random() * 2.5 + 0.5;
-    s.style.cssText = `
-      width: ${size}px; height: ${size}px;
-      top: ${Math.random() * 100}%;
-      left: ${Math.random() * 100}%;
-      --dur: ${Math.random() * 4 + 2}s;
-      --delay: ${Math.random() * 5}s;
-      --max-op: ${Math.random() * 0.6 + 0.2};
-    `;
+    const s = document.createElement('div'); s.className = 'star';
+    const sz = Math.random()*2.5+0.5;
+    s.style.cssText = `width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--dur:${Math.random()*4+2}s;--delay:${Math.random()*5}s;--max-op:${Math.random()*0.6+0.2}`;
     starsEl.appendChild(s);
   }
 
-  // Countdown — targeting next iftar time (customize date!)
   const eventDate = new Date('2026-03-07T17:00:00');
   function updateCountdown() {
-    const now = new Date();
-    const diff = eventDate - now;
-    if (diff <= 0) {
-      document.getElementById('countdown').innerHTML = '<p style="color:var(--gold-light);font-size:1.4rem;font-style:italic;">Сегодня ифтар! 🌙</p>';
-      return;
-    }
-    const days = Math.floor(diff / 86400000);
-    const hours = Math.floor((diff % 86400000) / 3600000);
-    const mins = Math.floor((diff % 3600000) / 60000);
-    const secs = Math.floor((diff % 60000) / 1000);
-    document.getElementById('cd-days').textContent = String(days).padStart(2,'0');
-    document.getElementById('cd-hours').textContent = String(hours).padStart(2,'0');
-    document.getElementById('cd-mins').textContent = String(mins).padStart(2,'0');
-    document.getElementById('cd-secs').textContent = String(secs).padStart(2,'0');
+    const diff = eventDate - new Date();
+    if (diff <= 0) { document.getElementById('countdown').innerHTML = '<p style="color:var(--gold-light);font-size:1.4rem;font-style:italic">Сегодня ифтар! 🌙</p>'; return; }
+    const d=Math.floor(diff/86400000), h=Math.floor((diff%86400000)/3600000), m=Math.floor((diff%3600000)/60000), s=Math.floor((diff%60000)/1000);
+    document.getElementById('cd-days').textContent=String(d).padStart(2,'0');
+    document.getElementById('cd-hours').textContent=String(h).padStart(2,'0');
+    document.getElementById('cd-mins').textContent=String(m).padStart(2,'0');
+    document.getElementById('cd-secs').textContent=String(s).padStart(2,'0');
   }
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
+  updateCountdown(); setInterval(updateCountdown,1000);
 
-  // RSVP
   function handleRsvp() {
-    const msg = document.getElementById('rsvp-msg');
-    msg.style.color = 'var(--gold-light)';
-    msg.textContent = '🌙 Отлично! Ждём тебя за нашим столом. Рамадан Карим!';
-    msg.style.animation = 'fadeUp 0.6s forwards';
+    const name = document.getElementById('rsvp-name').value.trim();
+    const attend = document.querySelector('input[name="attend"]:checked');
+    const err = document.getElementById('rsvp-error');
+    if (!name || !attend) { err.style.display='block'; return; }
+    err.style.display='none';
+    const msgs = {
+      yes: 'Мы тебя ждём за нашим столом.<br>Рамадан Карим! ✦',
+      maybe: 'Ждём твоего подтверждения!<br>Надеемся увидеть тебя 🌙',
+      no: 'Жаль, что не получится!<br>Рамадан Карим, увидимся скоро ✦'
+    };
+    document.getElementById('rsvp-success-name').textContent = name;
+    document.getElementById('rsvp-success-msg').innerHTML = msgs[attend.value];
+    document.getElementById('rsvp-form-wrap').style.display = 'none';
+    const box = document.getElementById('rsvp-success');
+    box.style.display = 'block';
   }
 
-  // Parallax subtle on scroll
   window.addEventListener('scroll', () => {
-    const y = window.scrollY;
-    document.querySelector('.moon-wrap').style.transform = `translateY(${y * 0.2}px)`;
+    document.querySelector('.moon-wrap').style.transform = `translateY(${window.scrollY*0.2}px)`;
   });
 </script>
 </body>
