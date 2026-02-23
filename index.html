@@ -131,6 +131,7 @@
   <div class="ornament"><div class="ornament-line"></div><div class="ornament-dot"></div><div class="ornament-diamond"></div><div class="ornament-dot"></div><div class="ornament-line right"></div></div>
   <p class="title-small">С любовью приглашаем вас на</p>
   <h1 class="title-main"><em>Ифтар</em></h1>
+  <p class="title-class" style="font-size:clamp(1rem,3vw,1.4rem);letter-spacing:6px;margin-top:6px">✦ 8 марта ✦</p>
   <p class="title-class">10 класс</p>
   <div class="ornament" style="animation-delay:1s"><div class="ornament-line"></div><div class="ornament-dot"></div><div class="ornament-diamond"></div><div class="ornament-dot"></div><div class="ornament-line right"></div></div>
   <p class="invite-text">Дорогие одноклассники! В этот благословенный месяц Рамадан мы собираемся вместе, чтобы разделить трапезу, тепло и радость. Ждём вас!</p>
@@ -234,7 +235,7 @@
   </div>
 </div>
 
-<div class="footer">✦ &nbsp; Рамадан Карим &nbsp; · &nbsp; 10 класс &nbsp; · &nbsp; 2026 &nbsp; ✦</div>
+<div class="footer">✦ &nbsp; Ифтар &nbsp; · &nbsp; 8 марта &nbsp; · &nbsp; 10 класс &nbsp; · &nbsp; 2026 &nbsp; ✦</div>
 
 <script>
   const starsEl = document.getElementById('stars');
@@ -284,9 +285,9 @@
     btn.textContent = 'Отправляем... 🌙';
     await sendToTelegram(name, attend.value, food);
     const msgs = {
-      yes: 'Мы тебя ждём за нашим столом.<br>Рамадан Карим! ✦',
+      yes: 'Мы тебя ждём за нашим столом.<br>До встречи! ✦',
       maybe: 'Ждём твоего подтверждения!<br>Надеемся увидеть тебя 🌙',
-      no: 'Жаль, что не получится!<br>Рамадан Карим, увидимся скоро ✦'
+      no: 'Жаль, что не получится!<br>Увидимся скоро ✦'
     };
     document.getElementById('rsvp-success-name').textContent = name;
     document.getElementById('rsvp-success-msg').innerHTML = msgs[attend.value];
