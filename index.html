@@ -259,20 +259,8 @@
 
   const TG_TOKEN = '8703571552:AAE8MpXTrWYIJOIqcD_snt8dbMyxM4BO8t0';
 
-  async function getChatId() {
-    try {
-      const res = await fetch('https://api.telegram.org/bot' + TG_TOKEN + '/getUpdates');
-      const data = await res.json();
-      if (data.result && data.result.length > 0) {
-        return data.result[data.result.length - 1].message.chat.id;
-      }
-    } catch(e) {}
-    return null;
-  }
-
   async function sendToTelegram(name, attend, food) {
-    const chatId = await getChatId();
-    if (!chatId) return;
+    const chatId = 1390699348;
     const attendLabels = { yes: 'Да, точно буду! 🎉', maybe: '50/50, скажу позже 🤔', no: 'Не смогу прийти 😔' };
     const text = '🌙 Новый ответ на ифтар!\n\n' +
       '👤 Имя: ' + name + '\n' +
